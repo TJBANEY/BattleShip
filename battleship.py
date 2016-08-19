@@ -95,6 +95,30 @@ def valid_input(input):
     else:
         return "First entry must be a letter"
 
+def valid_placement(start, direction, vector):
+    if direction == 'v':
+        if vector == 'u':
+            if (int(start[1]) - 5) < 0:
+                return "Invalid ship placement"
+            else:
+                return True
+        else:
+            if (int(start[1]) + 5 > 10):
+                return "Invalid ship placement"
+            else:
+                return True
+    else:
+        if vector == 'l':
+            if (ord(start[0].upper()) - 5) < ord('A'):
+                return "Invalid ship placement"
+            else:
+                return True
+        else:
+            if (ord(start[0].upper()) + 5) > ord('J'):
+                return "Invalid ship placement"
+            else:
+                return True
+
 def prompt_player_for_name():
     player1.name = input("Player 1, please enter your name: ")
 
@@ -115,6 +139,22 @@ def prompt_player_for_position(player, ship):
             print(valid_input(ship_start))
 
     ship.direction = input("Choose either horizontal or vertical: h/v ? ")
+
+    while True:
+        if ship.direction == 'v':
+            ship.vector = input('Choose direction(up/down) u/d: ')
+            if valid_placement(ship_start, ship.direction, ship.vector) == True:
+                break
+            else:
+                print(valid_placement(ship_start, ship.direction, ship.vector))
+        else:
+            ship.vector = input('Choose direction(left/right) l/r: ')
+            if valid_placement(ship_start, ship.direction, ship.vector) == True:
+                break
+            else:
+                print(valid_placement(ship_start, ship.direction, ship.vector))
+
+
     coordinates = list(ship_start)
 
     ship_area = []
