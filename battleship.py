@@ -79,6 +79,22 @@ submarine2.ship_type = SHIP_INFO[2]
 # selected area will also go into a "chosen fields" array. If the tuple is in
 # chosen fields, but not in any of the ships, than it will be . , else O
 
+def valid_input(input):    
+    input_list = [item for item in list(input) if item != ' ']
+
+    if ord(input_list[0].upper()) in range(ord('A'), (ord('Z') + 1)):
+        try:
+            int(input_list[1])
+        except:
+            return "Second entry must be a number between 1 - 10"
+        else:
+            if int(input_list[1]) in range(1, 11):
+                return True
+            else:
+                return "Second entry must be a number between 1 - 10"
+    else:
+        return "First entry must be a letter"
+
 def prompt_player_for_name():
     player1.name = input("Player 1, please enter your name: ")
 
@@ -90,7 +106,14 @@ def prompt_player_for_name():
 
 def prompt_player_for_position(player, ship):
 
-    ship_start = input("{}, enter starting position for your {} e.g A2 ".format(player.name, ship))
+    while True:
+        ship_start = input("{}, enter starting position for your {} e.g A2 ".format(player.name, ship))
+        if valid_input(ship_start) == True:
+            ship_start = [item for item in list(ship_start) if item != ' ']
+            break
+        else:
+            print(valid_input(ship_start))
+
     ship.direction = input("Choose either horizontal or vertical: h/v ? ")
     coordinates = list(ship_start)
 
