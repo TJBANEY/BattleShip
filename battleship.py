@@ -159,13 +159,25 @@ def prompt_player_for_position(player, ship):
 
     ship_area = []
     if ship.direction == 'v':
-        for coord in range(int(coordinates[1]), (int(coordinates[1]) + ship.ship_type[1])):
-            ship_area.append((coordinates[0], coord))
+        if ship.vector == 'u':
+            # for x in (6 - 3), 7
+            # for x in [3, 4, 5, 6]
+            for coord in range((int(coordinates[1]) - (ship.ship_type[1] - 1)), (int(coordinates[1]) + 1)):
+                ship_area.append((coordinates[0], coord))
+        else:
+            # for x in 1, (1 + 5)
+            # for x in [1, 2, 3, 4, 5]
+            for coord in range(int(coordinates[1]), (int(coordinates[1]) + ship.ship_type[1])):
+                ship_area.append((coordinates[0], coord))
         ship.area = ship_area
         ship_area = []
     else:
-        for coord in range(ord(coordinates[0]), (ord(coordinates[0]) + ship.ship_type[1])):
-            ship_area.append((chr(coord), int(coordinates[1])))
+        if ship.vector == 'l':
+            for coord in range((ord(coordinates[0]) - (ship.ship_type[1]) + 1), (ord(coordinates[0]) + 1)):
+                ship_area.append((chr(coord), int(coordinates[1])))
+        else:
+            for coord in range(ord(coordinates[0]), (ord(coordinates[0]) + ship.ship_type[1])):
+                ship_area.append((chr(coord), int(coordinates[1])))
         ship.area = ship_area
         ship_area = []
 
