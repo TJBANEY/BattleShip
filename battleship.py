@@ -27,6 +27,10 @@ for item in range(1, 11):
 
 class Player:
     name = ""
+    guesses = []
+
+    def __str__(self):
+        return "{}".format(self.name)
 
 class Ship:
     name = ""
@@ -160,13 +164,9 @@ def prompt_player_for_position(player, ship):
     ship_area = []
     if ship.direction == 'v':
         if ship.vector == 'u':
-            # for x in (6 - 3), 7
-            # for x in [3, 4, 5, 6]
             for coord in range((int(coordinates[1]) - (ship.ship_type[1] - 1)), (int(coordinates[1]) + 1)):
                 ship_area.append((coordinates[0], coord))
         else:
-            # for x in 1, (1 + 5)
-            # for x in [1, 2, 3, 4, 5]
             for coord in range(int(coordinates[1]), (int(coordinates[1]) + ship.ship_type[1])):
                 ship_area.append((coordinates[0], coord))
         ship.area = ship_area
@@ -193,34 +193,53 @@ def print_player_board(player):
         for row in range(0, 10):
             updated_row.append(str(row + 1).rjust(2))
             for column in coordinate_list[row]:
+                # (A,1), (A,2), (A,3)
 
                 if column in aircraft_carrier1.area:
-                    if aircraft_carrier1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player2.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if aircraft_carrier1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 elif column in battleship1.area:
-                    if battleship1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player2.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if battleship1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 elif column in submarine1.area:
-                    if submarine1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player2.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if submarine1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 elif column in destroyer1.area:
-                    if destroyer1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player2.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if destroyer1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 elif column in patrolboat1.area:
-                    if patrolboat1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player2.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if patrolboat1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 else:
-                    updated_row.append(" O")
+                    if column in player2.guesses:
+                        updated_row.append(" .")
+                    else:
+                        updated_row.append(" O")
 
             print("".join(updated_row))
             updated_row = []
@@ -230,32 +249,69 @@ def print_player_board(player):
             for column in coordinate_list[row]:
 
                 if column in aircraft_carrier2.area:
-                    if aircraft_carrier1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player1.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if aircraft_carrier1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 elif column in battleship2.area:
-                    if battleship1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player1.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if battleship1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 elif column in submarine2.area:
-                    if submarine1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player1.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if submarine1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 elif column in destroyer2.area:
-                    if destroyer1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player1.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if destroyer1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 elif column in patrolboat2.area:
-                    if patrolboat1.direction == 'v':
-                        updated_row.append(VERTICAL_SHIP)
+                    if column in player1.guesses:
+                        updated_row.append(" *")
                     else:
-                        updated_row.append(HORIZONTAL_SHIP)
+                        if patrolboat1.direction == 'v':
+                            updated_row.append(VERTICAL_SHIP)
+                        else:
+                            updated_row.append(HORIZONTAL_SHIP)
                 else:
                     updated_row.append(" O")
+
+            print("".join(updated_row))
+            updated_row = []
+
+def print_opponent_board(opponent):
+
+    updated_row = []
+    print_board_heading()
+
+    if opponent == player1:
+        for row in range(0, 10):
+            updated_row.append(str(row + 1).rjust(2))
+            for column in coordinate_list[row]:
+                updated_row.append(" O")
+
+            print("".join(updated_row))
+            updated_row = []
+    else:
+        for row in range(0, 10):
+            updated_row.append(str(row + 1).rjust(2))
+            for column in coordinate_list[row]:
+                updated_row.append(" O")
 
             print("".join(updated_row))
             updated_row = []
@@ -266,6 +322,29 @@ def clear_screen():
 
 def print_board_heading():
     print("   " + " ".join([chr(c) for c in range(ord('A'), ord('A') + BOARD_SIZE)]))
+
+def player_turn(player, opponent):
+    while True:
+        start = input("{}, it is your turn. Press enter to continue: ".format(player.name))
+        if start == "":
+            break
+        else:
+            print("Something went wrong !")
+
+    # top board should be where you have gone
+    # button board is your board with players guesses
+
+    clear_screen()
+    print_opponent_board(opponent)
+    print(" ")
+    print_player_board(player)
+
+    choice = input("Enter a place to hit: ")
+    player.guesses.append(choice)
+
+    clear_screen()
+
+    player_turn(opponent, player)
 
 def start_game():
     prompt_player_for_name()
@@ -281,5 +360,9 @@ def start_game():
     prompt_player_for_position(player2, submarine2)
     prompt_player_for_position(player2, destroyer2)
     prompt_player_for_position(player2, patrolboat2)
+
+    # clear_screen()
+
+    player_turn(player1, player2)
 
 start_game()
