@@ -1,3 +1,14 @@
+# area_tuple = (input_list[0], input_list[1])
+#                 if player == player1:
+#                     overlaps = False
+#                     for ship in player1_ships:
+#                         if area_tuple in ship.area:
+#                         overlaps = True
+#                     if overlaps:
+#                         return "Entry overlaps with another ship"
+#                     else:
+#                         return True
+
 SHIP_INFO = [
     ("Aircraft Carrier", 5),
     ("Battleship", 4),
@@ -367,8 +378,6 @@ def start_game():
     prompt_player_for_position(player2, submarine2)
     prompt_player_for_position(player2, destroyer2)
     prompt_player_for_position(player2, patrolboat2)
-
-    # clear_screen()
 
     player_turn(player1, player2)
 
